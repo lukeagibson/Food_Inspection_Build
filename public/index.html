@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Food Inspection</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/leaflet.fusesearch.css" crossorigin="" />
+    <link rel="stylesheet" href="style.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="../dist/MarkerCluster.Default.ie.css" /><![endif]-->
+   
+  </head>
+</head>
+<body>
+    <div class="wrapper">
+        <div id="header">
+            <header>
+                <h1>Prince George's County Food Inspection Map</h1>
+            </header>
+                <h3><b>Project Links</b></h3>
+        </div>
+    
+        <div id="links">
+            <a href="index.html">Home</a>
+            <a href="About.html">About</a>
+            <a href="https://github.com/bcantillano/INST377_Food_Inspection/tree/master/docs">Documentation</a>
+        </div>
+        
+        <div class="wrapper">
+            <div class="OutputContainer">
+                <h3>Below is a map of Prince George's County. Use the filter to refine your search.</h3>
+                <div id="mapid" style="width: 700px; height: 600px;"></div>
+            </div>
+            
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="node_modules_dl/leaflet.css" crossorigin=""/>
+    <script src="node_modules_dl/leaflet.js"></script>
+    <script src="node_modules_dl/leaflet.featuregroup.subgroup-src.js"></script>
+    <link rel="stylesheet" href="node_modules_dl/MarkerCluster.css" crossorigin=""/>
+    <link rel="stylesheet" href="node_modules_dl/MarkerCluster.Default.css" crossorigin=""/>
+    <script src="node_modules_dl/leaflet.markercluster.js"></script>
+    <!-- <script src="javascript/map.js"></script> -->
+
+    <script>
+        var coffee = [], bar = [], cafeteria = [],
+            college = [], deli = [], fastfood = [], restaurant = [], grocery = [],
+            seafood = [], carry = [], bakery = [];
+        function isNot(obj) {
+            if (obj.category == 'N/A' || obj.category == 'Private School'
+                || obj.category == 'Public School' || obj.category == 'Fire/Community Hall' || obj.category == 'Banquet Hall/Ballroom' ||
+                obj.category == 'Casino' || obj.category == 'Church/Temple/Mosque' || obj.category == 'Health Care Facility' ||
+                obj.category == 'Dollar Store' || obj.category == 'Convenience Store' || obj.category == 'Full Service' ||
+                obj.category == 'Gas Station Store' || obj.category == 'Ice Cream' || obj.category == 'Catering Only' ||
+                obj.category == 'Group Home' || obj.category == 'Meat/Poultry Market' || obj.category == 'Pre-Packaged Only' ||
+                obj.category == 'Snack Bar/Concession Stand' || obj.category == 'Multiple Facilities' || obj.category == 'Hotel' ||
+                obj.category == 'Limited Service' || obj.category == 'Private Club' || obj.category == 'Stadium/Amusement Park') {
+                return false;
+            }
+            return true;
+        }
+        function pushToArray(arr, obj) {
+            const index = arr.findIndex((e) => e.establishment_id === obj.establishment_id);
+            if (isNot(obj)) {
+                if (obj.inspection_date) {
+                    if (index === -1) {
+                        arr.push(obj);
+                    } else {
+
+                        if (arr[index].inspection_date > obj.inspection_date) {
+                            arr[index] = obj;
+                        }
+                    }
+                }
+            }
+
+            return arr;
+        }
+        function compliance(property) {
+            if (property == 'Compliant - No Health Risk') {
+                return 'green'
+            }
+            return 'red'
+        }
+        function imgType(category) {
+            if (category == 'Cafeteria' || category == 'Carry-out') {
+                return '.png'
+            }
+            return '.gif'
+        }
+        function iconHandler(property) {
+
+            var imgtype = imgType(property.properties.category);
+
+            if (property.properties.category == 'Bakery' || property.properties.category == 'Bakery/Catering') {
+                return 'node_modules_dl/images/' + 'Bakery' + compliance(property.inspection_results) + imgtype;
+            }
+            else if (property.properties.category == 'Bar/Tavern/Lounge') {
+                return 'node_modules_dl/images/' + 'bar' + compliance(property.inspection_results) + imgtype;
+            }
+            else if (property.properties.category == 'College/University') {
+                return 'node_modules_dl/images/' + 'college' + compliance(property.inspection_results) + imgtype
+            }
+            else {
+                return 'node_modules_dl/images/' + property.properties.category + compliance(property.inspection_results) + imgtype
+            }
+
+
+        }
+        function pushToArray(arr, obj) {
+            const index = arr.findIndex((e) => e.properties.establishment_id === obj.properties.establishment_id);
+            if (index === -1) {
+                arr.push(obj);
+            } else {
+                if(arr[index].inspection_date>obj.inspection_date){
+                arr[index] = obj;
+            }
+        }
+            return arr;
+        }
+
+        var data = $.ajax({
+            url: "/api",
+            dataType: "json",
+            success: console.log("Data successfully loaded."),
+            error: function (xhr) {
+                alert(xhr.statusText)
+            }
+        })
+        
+        $.when(data).done(function () {
+        //function loadData() {
+            var clusterOptions = { showCoverageOnHover: true, maxClusterRadius: 50, spiderfyOnMaxZoom: true };
+            var baseUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            var baseAttribution = 'Data, imagery and map information provided by <a href="http://open.mapquest.co.uk" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_blank">CC-BY-SA</a>';
+            var maxZoom = 20;
+            var opacity = 1.0;
+            var subdomains = 'abc';
+            var basemap = new L.TileLayer(baseUrl, {maxZoom: maxZoom, attribution: baseAttribution, subdomains: subdomains, opacity: opacity });
+            var map = new L.Map('mapid', {
+                center:new L.LatLng(38.7849, -76.872),
+                zoom: 10,
+                maxZoom: maxZoom,
+                layers: [basemap],
+            });
+            map.setView([38.7849, -76.872], 10);
+            var popupOpts = {
+                autoPanPadding: new L.Point(5, 50),
+                autoPan: true
+            };
+            var markers = new L.MarkerClusterGroup();
+            var points;
+            console.log("fetching");
+            var uncleantemp = data.responseJSON;
+            var unclean = uncleantemp.features;
+            console.log(unclean);
+            console.log(unclean.length)
+            var clean=[];
+            for(var i=0;i<unclean.length;i++){
+                var temp= unclean[i];
+                clean= pushToArray(clean,temp);
+            }
+            console.log(clean)
+            var mcg = new L.MarkerClusterGroup(clusterOptions).addTo(map);
+            var coffeeGroup = L.featureGroup.subGroup(mcg);
+            var barGroup = L.featureGroup.subGroup(mcg);
+            var carryGroup = L.featureGroup.subGroup(mcg);
+            var cafeteriaGroup = L.featureGroup.subGroup(mcg);
+            var seafoodGroup = L.featureGroup.subGroup(mcg);
+            var restaurantGroup = L.featureGroup.subGroup(mcg);
+            var groceryGroup = L.featureGroup.subGroup(mcg);
+            var deliGroup = L.featureGroup.subGroup(mcg);
+            var collegeGroup = L.featureGroup.subGroup(mcg);
+            var fastfoodGroup = L.featureGroup.subGroup(mcg);
+            var bakeryGroup = L.featureGroup.subGroup(mcg);
+            for (let i = 0; i < clean.length; i++) {
+                point = clean[i];
+                if (point.hasOwnProperty('geometry') && point['geometry']) {
+                    var popup = '<div class="popup-content"><table class="table table-striped table-bordered table-condensed">';
+                    popup += '<tr><th>' + point.name + '</th><td>' + '</td></tr>';
+                    popup += "</table></popup-content>";
+                    var lat=point.geometry.coordinates[1];
+                    var lng=point.geometry.coordinates[0];
+                    marker = L.marker([lat,lng], {
+                        icon: L.icon({
+                            iconUrl: iconHandler(point),
+                            iconSize: [20, 20]
+                        })
+                    });
+                    marker.bindPopup(popup, popupOpts);
+                    switch (point.properties.category) {
+                            case 'Carry-out':
+                                marker.addTo(carryGroup)
+                                break;
+                            case 'Fast Food':
+                                marker.addTo(fastfoodGroup)
+                                break;
+                            case 'Coffee Shop':
+                                marker.addTo(coffeeGroup);
+                                break;
+                            case 'Seafood':
+                                marker.addTo(seafoodGroup)
+                                break;
+                            case 'Deli':
+                                marker.addTo(deliGroup)
+                                break;
+                            case 'Grocery Store':
+                                marker.addTo(groceryGroup)
+                                break;
+                            case 'Cafeteria':
+                                marker.addTo(cafeteriaGroup)
+                                break;
+                            case 'Bakery':
+                                marker.addTo(bakeryGroup)
+                                break;
+                            case 'Bakery/Catering':
+                                marker.addTo(bakeryGroup)
+                                break;
+                            case 'Restaurant':
+                                marker.addTo(bakeryGroup);
+                                break;
+                            case 'College/University':
+                                marker.addTo(collegeGroup);
+                                break;
+                            case 'Bar/Tavern/Lounge':
+                                marker.addTo(barGroup);
+                                break;
+                        
+                    }
+                }
+            }
+           
+            var overlays={};
+            overlays["Bakery"]=bakeryGroup;
+            overlays["Bar"]=barGroup;
+            overlays["Cafeteria"]=cafeteriaGroup;
+            overlays["Carry-out"]=carryGroup;
+            overlays["Coffeee"]=coffeeGroup;
+            overlays["College"]=collegeGroup;
+            overlays["Deli"]=deliGroup;
+            overlays["Fast Food"]=fastfoodGroup;
+            overlays["Groceries"]=groceryGroup;
+            overlays["Restaurant"]=restaurantGroup;
+            overlays["Seafood"]=seafoodGroup;
+            
+            var control = L.control.layers(null, overlays, {collapsed: true });;
+            map.addControl(control);
+
+            // points = L.geoJSON(clean);
+            // markers.addLayer(points);
+            // map.addLayer(markers);
+            
+        })
+    </script>
+</body>
+</html>

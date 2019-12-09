@@ -1,0 +1,38 @@
+{
+  "name": "inst377_food_inspection",
+  "version": "1.0.0",
+  "description": "Restaurant food inspection heat mapping and tracking software built on JS/Leaflet. Map-based web app of Prince George's County.",
+  "main": "map.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node map.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcantillano/INST377_Food_Inspection.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bcantillano/INST377_Food_Inspection/issues"
+  },
+  "homepage": "https://github.com/bcantillano/INST377_Food_Inspection#readme",
+  "devDependencies": {
+    "eslint": "^6.7.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "fetch": "^1.1.0",
+    "jquery": "^3.4.1",
+    "leaflet": "^1.6.0",
+    "leaflet.featuregroup.subgroup": "^1.0.2",
+    "leaflet.markercluster": "^1.4.1",
+    "node-fetch": "^2.6.0"
+  }
+}

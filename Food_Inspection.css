@@ -1,0 +1,75 @@
+/* Style sheet for Food Inspection Final Project */
+
+body {
+  color:#000000;
+  background-color : #ffffff;
+  font-family : arial, verdana, sans-serif;
+}
+.map-label {
+  z-index: 9000638;
+}
+
+h1 {
+  font-size:25px;
+}
+
+p {
+  font-size:12px;
+}
+
+table {
+  background-color:#efefef;
+  border-style:solid;
+  border-width:1px;
+  border-color:#999999;
+}
+
+th {
+  background-color:#cccccc;
+  font-weight:bold;
+  padding:5px;
+}
+
+td {
+  padding:5px;
+}
+
+td.code {
+  font-family:courier, courier-new, serif;
+  font-weight:bold;
+}
+
+#mapid { 
+  height: 180px; 
+}
+  
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  background: #99ff79;
+  border: 1px;
+  margin: 25px;
+      
+}
+      
+.wrapper div {
+  border-radius: 14px;
+}
+
+.filter{
+  background-color: rgb(255, 98, 41);
+  text-align: center;
+}
+
+.OutputContainer {
+  display: flex; /* or inline-flex */
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: rgb(221, 255, 0);
+}
+

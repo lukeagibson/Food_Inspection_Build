@@ -1,0 +1,121 @@
+/* Style sheet for Food Inspection Final Project */
+html {
+  background-color: whitesmoke;
+}
+
+header {
+  display: flex;
+  background-color: rgba(253, 165, 41, 0.8);
+  justify-content: center;
+  margin-bottom: -0.5em;
+}
+
+#links {
+  text-align: center;
+}
+
+body {
+  background-color: #ffffff;
+  font-family: "Trebuchet MS", Segoe UI, Tahoma, Helvetica, sans-serif;
+}
+
+#links a {
+  text-decoration: none;
+  display: inline-block;
+  margin: 0 0.2em;
+  margin-bottom: 1em;
+  padding: 3px;
+  background: #97caf2;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  font-weight: bold;
+  color: white;
+}
+
+h1 {
+  font-size: 26px;
+  text-align: center;
+}
+
+h3 {
+  text-align: center;
+  font-family: "Trebuchet MS", sans-serif;
+  margin-bottom: 0.3em;
+}
+
+h4 {
+  text-align: center;
+  margin-bottom: auto;
+}
+
+p {
+  font-size: 16px;
+  margin-bottom: auto;
+}
+
+a {
+  text-decoration: none;
+}
+
+table {
+  background-color: #efefef;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #999999;
+}
+
+th {
+  background-color: #cccccc;
+  font-weight: bold;
+  padding: 5px;
+}
+
+td {
+  padding: 5px;
+}
+
+td.code {
+  font-family: courier, courier-new, serif;
+  font-weight: bold;
+}
+
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  /* width: 70%; */
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  background: orange;
+  /* border: 1px; */
+  /* margin: 25px; */
+}
+
+.wrapper div {
+  border-radius: 8px;
+}
+
+.filter {
+  background-color: #808080;
+  text-align: center;
+}
+
+.OutputContainer {
+  display: flex; /* or inline-flex */
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #e6e6e6;
+}
+
+.logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logos img {
+  margin-top: 1em;
+  max-width: 157px;
+  margin-right: 1em;
+}
