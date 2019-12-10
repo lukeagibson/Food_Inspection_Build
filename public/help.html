@@ -35,24 +35,24 @@
 
     <div class="wrapper">
         <div class="OutputContainer">
-            <h1>About</h1>
+            <h1>Help</h1>
 
-            <h2>Prince George's County Food Inspection Database </h2>
+            <h2>Documentation</h2>
 
-            <p>There is currently no way for people to see what restaurants, food establishments, and areas are
-                compliant and not compliant with Prince George's County Food Inspections.Our application will highlight
-                areas of potential risk and show non-compliant food establishments in an intuitive way to users.
+            <p>For help with using the web application, follow the documentation link above in order to read about the project and find instructions for use.</p>
+            <h2>New Data Source</h2>
+
+            <p>This page allows users to change the data source for food inspection data, if they find APIs that are different from
+                the Prince George's County inspections, or to reset it to the intended one in case it has been changed.
             </p>
 
-            <p>Our project group created a program that maps restaurants in Prince George's County that are
-                non-compliant with county food inspections.
-            </p>
+            <button onclick = resetURL()>Reset Resource</button>
 
-            <p>Our stakeholders include Prince George's County Residents, UMD students, local restaurant managers, and
-                the HHS.
-            </p>
-
-            <p>The technology stack that we used includes Node.js, HTML/CSS, and the Leaflet JavaScript API.</p>
+            <form onsubmit= changeURL()>
+                URL:<br>
+                <input type="text" id="newURLform"><br>
+                <input type="submit" value="Submit">
+            </form>
 
             <div class = "logos">
 
@@ -71,6 +71,29 @@
                 <h4>Developers: Ayodeji Adeleke, Byron Cantillano, Luke Gibson, Jonathan Land, Ken Lin, Emmanuel Mekonnen</h4>
         </div>
 
+        <script>
+            function changeURL() {
+                var newURL = document.getElementById("newURLform").innerHTML;
+                console.log(newURL);
+                $.ajax({
+                    url: '/',
+                    type: 'PUT',
+                    data: {
+                        "url": newURL
+                    }
+                })
+                ;
+            }
+
+            function resetURL() {
+                $.ajax({
+                    url: '/',
+                    type: 'POST',
+                    data: {
+                    }
+                })
+            }
+        </script>
 </body>
 
 </html>

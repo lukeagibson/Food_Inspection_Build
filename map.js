@@ -15,24 +15,34 @@ console.log("open")
 app.use(express.static('public'));
 console.log("done")
 
-   
-// var data =$.ajax({
-//     url: "https://data.princegeorgescountymd.gov/resource/umjn-t2iz.geojson",
-//     dataType: "json",
-//     success: console.log("Data successfully loaded."),
-//     error: function(xhr) {
-//         alert(xhr.statusText)
-//     }
-// })
-var baseURL = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.geojson';
 
-// $.when(data).done(function() {
+var blacklist = [];
+
+var baseURL = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.geojson';
+fetch(baseURL)
+    .then((r) => r.json())
+    .then((r) => {
+        console.log("printing");
+        console.log(r);
+        var data = r;
+        return r;
+        })
+    .catch((err) => {
+        console.log("error")
+        console.log(err);
+        res.redirect('/error');
+      });
+
 app.get('/api', (req, res) => {
     fetch(baseURL)
         .then((r) => r.json())
         .then((r) => {
             console.log("printing");
             console.log(r);
+            // console.log("filtering")
+            // var filteredjson;
+            // filteredjson.features = r.features.filter(item => !(item.establishment_id in blacklist))
+            // console.log(filteredjson)
             var data = r;
             res.send(r);
             return r;
@@ -47,7 +57,8 @@ app.get('/api', (req, res) => {
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 app.post('/', function (req, res) {
-    res.send("POST requests are not enabled for this server")
+    baseURL = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.geojson';
+    res.send("URL has been reset.")
   });
 
 app.put('/', function (req, res) {
@@ -55,9 +66,12 @@ app.put('/', function (req, res) {
     res.send("Base URL has been updated!")
   })
 
+// app.delete('/', function (req, res) {
+//     blacklist.push(req.body.establishment_id);
+//     console.log("Now blocking the following establishment IDs:");
+//     for (var item in blacklist) {
+//         console.log(blacklist[item])
+//     }
+//     res.send("Deleted entries if they exist.")
+//   });
 
-/*for (var i=0;i<30;i++)
-{
-    var mark=data[i];
-    console.log(data.location);
-}*/
