@@ -4,10 +4,9 @@ html {
 }
 
 header {
-  display: flex;
-  background-color: rgba(253, 165, 41, 0.8);
   justify-content: center;
   margin-bottom: -0.5em;
+  text-shadow: 1px 1.5px 1px #ccc;
 }
 
 #links {
@@ -15,8 +14,8 @@ header {
 }
 
 body {
-  background-color: #ffffff;
   font-family: "Trebuchet MS", Segoe UI, Tahoma, Helvetica, sans-serif;
+  background: whitesmoke;
 }
 
 #links a {
@@ -25,11 +24,23 @@ body {
   margin: 0 0.2em;
   margin-bottom: 1em;
   padding: 3px;
-  background: #97caf2;
+  background-color: #97caf2;
   border: 2px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
+  box-shadow: 0 5px #999;
+  border: none;
   font-weight: bold;
   color: white;
+  cursor: pointer;
+  outline: none;
+}
+
+#links a:hover {background-color: #6ea3cc}
+
+#links a:active {
+  background-color: #6ea3cc;
+  box-shadow: 0 5px #666;
+  transform: translateY(2px);
 }
 
 h1 {
@@ -86,14 +97,12 @@ td.code {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  flex-direction: row;
+  flex-direction: column;
   background: orange;
   /* border: 1px; */
   /* margin: 25px; */
-}
-
-.wrapper div {
-  border-radius: 8px;
+  box-shadow: 0.5em 0.5em rgb(250,105,0);
+  margin-bottom: 2em;
 }
 
 .filter {
