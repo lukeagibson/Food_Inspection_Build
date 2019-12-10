@@ -22,6 +22,7 @@ button {
   border: black;
   background-color:#97caf2;
   border-radius: 4px;
+  font-weight: bold;
   box-shadow: 0 5px #999;
   color: white;
   padding: 15px 32px;
