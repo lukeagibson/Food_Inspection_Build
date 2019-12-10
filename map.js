@@ -24,15 +24,16 @@ console.log("done")
 //         alert(xhr.statusText)
 //     }
 // })
+var baseURL = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.geojson';
 
 // $.when(data).done(function() {
 app.get('/api', (req, res) => {
-    const baseURL = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.geojson';
     fetch(baseURL)
         .then((r) => r.json())
         .then((r) => {
             console.log("printing");
             console.log(r);
+            var data = r;
             res.send(r);
             return r;
         })
@@ -41,11 +42,18 @@ app.get('/api', (req, res) => {
             console.log(err);
             res.redirect('/error');
           });
-        
-    
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
+app.post('/', function (req, res) {
+    res.send("POST requests are not enabled for this server")
+  });
+
+app.put('/', function (req, res) {
+    baseURL = req.body.url
+    res.send("Base URL has been updated!")
+  })
 
 
 /*for (var i=0;i<30;i++)
