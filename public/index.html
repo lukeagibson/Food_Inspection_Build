@@ -125,6 +125,15 @@
             return arr;
         }
 
+        function resetURL() {
+                $.ajax({
+                    url: '/',
+                    type: 'POST',
+                    data: {
+                    }
+                })
+            }
+
         var data = $.ajax({
             url: "/api",
             dataType: "json",
@@ -183,7 +192,7 @@
                 point = clean[i];
                 if (point.hasOwnProperty('geometry') && point['geometry']) {
                     var popup = '<div class="popup-content"><table class="table table-striped table-bordered table-condensed">';
-                    popup += '<tr><th>' + point.name + '</th><td>' + '</td></tr>';
+                    popup += '<tr><th>' + point.properties.name + '</th><td>' + '</td></tr>';
                     popup += "</table></popup-content>";
                     var lat=point.geometry.coordinates[1];
                     var lng=point.geometry.coordinates[0];
